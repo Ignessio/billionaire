@@ -21,9 +21,23 @@ RSpec.describe GameQuestion, type: :model do
     end
 
     # Проверяем метод answer_correct?
-    it 'correct .answer_correct?' do
-      # Именно под буквой b выше мы спрятали указатель на верный ответ
-      expect(game_question.answer_correct?('b')).to be_truthy
+    describe '#correct_answer?' do
+      it 'check answer_correct?' do
+        expect(game_question.answer_correct?('b')).to be(true)
+      end
+    end
+
+    # Проверяем метод correct_answer_key
+    describe '#correct_answer_key' do
+      it 'returns the key of the correct answer' do
+        expect(game_question.correct_answer_key).to eq('b')
+      end
+    end
+
+    # Проверяем метод делегирования текста и уровня вопросу
+    it 'correct .level & .text delegates' do
+      expect(game_question.text).to eq(game_question.question.text)
+      expect(game_question.level).to eq(game_question.question.level)
     end
   end
 end

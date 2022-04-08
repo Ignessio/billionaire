@@ -64,12 +64,6 @@ class GameQuestion < ActiveRecord::Base
     variants[correct_answer_key]
   end
 
-def apply_help!(help_type)
-    add_fifty_fifty if help_type.to_s == :fifty_fifty
-    add_audience_help if help_type.to_s == :audience_help
-    add_friend_call if help_type.to_s == :friend_call
-end
-
   # Добавляем в help_hash по ключю fifty_fifty - массив из двух вариантов: правильный и случайный
   # и сохраняем объект
   def add_fifty_fifty

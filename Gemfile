@@ -17,7 +17,7 @@ gem 'sqlite3', '~> 1.3.6'
 
 
 group :development, :test do
-  gem 'byebug'
+  gem 'pry-rails'
   gem 'rspec-rails', '~> 3.4'
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'

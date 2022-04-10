@@ -12,7 +12,7 @@ RSpec.describe Question, type: :model do
 
     it { should validate_presence_of :text }
 
-    subject { Question.new(text: 'test_text', level: 0, answer1: '1', answer2: '1', answer3: '1', answer4: '1') }
+    subject { Question.new(text: 'test_text', level: 0, answer1: '1', answer2: '2', answer3: '3', answer4: '4') }
     it { should validate_uniqueness_of :text }
     it { should validate_presence_of :level }
 

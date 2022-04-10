@@ -69,27 +69,40 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  # Тесты на основную статус игры
-  describe '#.status' do
+  # Тесты на статус завершенной игры
+  describe '#status of completed game' do
     before(:each) do
       game_w_questions.finished_at = Time.now
       expect(game_w_questions.finished?).to be(true)
 
-      it ':won' do
+      it 'returns game status :won' do
         game_w_questions.current_level = Question::QUESTION_LEVELS.max + 1
         expect(game_w_questions.status).to eq(:won)
       end
 
-      it ':fail' do
+      it 'returns game status :fail' do
         game_w_questions.is_failed
-        expect(game_w_questions.status).to eq(:won)
+        expect(game_w_questions.status).to eq(:failed)
       end
 
-      it ':timeout' do
+      it 'returns game status :timeout' do
         game_w_questions.created_at = 1.hour.ago
         game_w_questions.is_failed = true
         expect(game_w_questions.status).to eq(:timeout)
       end
+    end
+  end
+
+  describe '#previous_level' do
+    it 'returns previous question level' do
+      game_w_questions.current_level = 1
+      expect(game_w_questions.previous_level).to eq(0)
+    end
+  end
+
+  describe '#current_game_question' do
+    it 'returns current game question' do
+      expect(game_w_questions.current_game_question).to eq(game_w_questions.game_questions.first)
     end
   end
 end

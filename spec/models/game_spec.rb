@@ -26,6 +26,7 @@ RSpec.describe Game, type: :model do
       # проверяем статус и поля
       expect(game.user).to eq(user)
       expect(game.status).to eq(:in_progress)
+
       # проверяем корректность массива игровых вопросов
       expect(game.game_questions.size).to eq(15)
       expect(game.game_questions.map(&:level)).to eq (0..14).to_a
@@ -38,8 +39,10 @@ RSpec.describe Game, type: :model do
     it 'answer correct continues game' do
       # Проверяем начальный статус игры
       level = game_w_questions.current_level
+
       # Текущий вопрос
       q = game_w_questions.current_game_question
+
       # Проверяем, что статус in_progress
       expect(game_w_questions.status).to eq(:in_progress)
 
@@ -54,7 +57,7 @@ RSpec.describe Game, type: :model do
 
       # Проверяем, что игра продолжается/не закончена
       expect(game_w_questions.status).to eq(:in_progress)
-      expect(game_w_questions.finished?).to be_falsey
+      expect(game_w_questions.finished?).to be(false)
     end
   end
 
@@ -103,6 +106,45 @@ RSpec.describe Game, type: :model do
   describe '#current_game_question' do
     it 'returns current game question' do
       expect(game_w_questions.current_game_question).to eq(game_w_questions.game_questions.first)
+    end
+  end
+
+  describe '#answer_current_question!' do
+    context 'when answer is correct' do
+      let(:question) { game_w_questions.current_game_question }
+
+      it { expect(game_w_questions.answer_current_question!('d')).to be(true) }
+      it { expect(game_w_questions.status).to eq(:in_progress) }
+      it { expect(game_w_questions.finished?).to be(false) }
+    end
+
+    context 'when answer is incorrect' do
+
+      it { expect(game_w_questions.answer_current_question!('a')).to be(false) }
+      it { expect(game_w_questions.status).to eq(:in_progress) }
+      it { expect(game_w_questions.finished?).to be(false) }
+    end
+
+    context 'when correct answer last question' do
+      before (:each) do
+        game_w_questions.current_level = Question::QUESTION_LEVELS.max
+        game_w_questions.answer_current_question!(game_w_questions.answer_current_question!('d'))
+
+        it { expect(game_w_questions.answer_current_question!('d')).to be(true) }
+        it { expect(game_w_questions.status).to eq(:won) }
+        it { expect(game_w_questions.finished?).to be(true) }
+      end
+    end
+
+    context 'when time is out' do
+      before (:each) do
+        game_w_questions.created_at = 1.hour.ago
+
+        it { expect(game_w_questions.answer_current_question!('d')).to be(false) }
+        it { expect(game_w_questions.answer_current_question!('a')).to be(false) }
+        it { expect(game_w_questions.status).to eq(:timeout) }
+        it { expect(game_w_questions.finished?).to be(true) }
+      end
     end
   end
 end

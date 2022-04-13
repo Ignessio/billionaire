@@ -1,19 +1,19 @@
-# (c) goodprogrammer.ru
-# Объявление фабрики для создания нужных в тестах объектов
-# см. другие примеры на
-# http://www.rubydoc.info/gems/factory_girl/file/GETTING_STARTED.md
-
 FactoryBot.define do
+  # Название фабрики (question)
   factory :question do
+    # Генерируем последовательность уникальных текстов вопроса
+    # Параметр n гарантирует уникальность вопроса
+    sequence(:text) { |n| "В каком году была космическая одиссея #{n}?" }
+
+    # Уровни генерируем от 0 до 14
+    sequence(:level) { |n| n % 15 }
+    
+    # Значения полей ответа
     # Ответы сделаем рандомными для красоты
     answer1 { "#{rand(2001)}" }
     answer2 { "#{rand(2001)}" }
     answer3 { "#{rand(2001)}" }
     answer4 { "#{rand(2001)}" }
-
-    sequence(:text) { |n| "В каком году была космическая одиссея #{n}?" }
-
-    sequence(:level) { |n| n % 15 }
   end
 end
 

@@ -13,7 +13,6 @@ gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
 gem 'font-awesome-rails'
 gem 'russian'
-gem 'sqlite3', '~> 1.3.6'
 
 
 group :development, :test do
@@ -21,6 +20,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.4'
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
+  gem 'sqlite3', '~> 1.3.6'
 
   # Гем, который использует rspec, чтобы смотреть наш сайт
   gem 'capybara'

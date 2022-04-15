@@ -70,8 +70,7 @@ RSpec.describe GamesController, type: :controller do
 
     # юзер может создать новую игру
     it '#create game' do
-      # сперва накидаем вопросов, из чего собирать новую игру
-      generate_questions(15)
+      generate_questions(15) # сперва накидаем вопросов, из чего собирать новую игру
 
       post :create
       game = assigns(:game) # вытаскиваем из контроллера поле @game
@@ -94,7 +93,7 @@ RSpec.describe GamesController, type: :controller do
     end
 
     # юзер отвечает на игру корректно - игра продолжается
-    it '#answer correctly' do
+    it '#answer is correct' do
       # передаем параметр params[:letter]
       letter = game_w_questions.current_game_question.correct_answer_key
 
@@ -104,7 +103,7 @@ RSpec.describe GamesController, type: :controller do
       expect(game.finished?).to be(false)
       expect(game.current_level).to be > 0
       expect(response).to redirect_to(game_path(game))
-      expect(flash.empty?).to be_truthy # удачный ответ не заполняет flash
+      expect(flash.empty?).to be(true) # удачный ответ не заполняет flash
     end
 
     # проверка, что не может посмотреть чужую игру
@@ -143,6 +142,15 @@ RSpec.describe GamesController, type: :controller do
       expect(game).to be_nil
 
       expect(response).to redirect_to(game_path(game_w_questions))
+      expect(flash[:alert]).to be
+    end
+
+    it '#answer is incorrect' do
+      put :answer, id: game_w_questions.id, letter: 'a'
+      game = assigns(:game)
+
+      expect(game.finished?).to be(true)
+      expect(response).to redirect_to(user_path(user))
       expect(flash[:alert]).to be
     end
   end

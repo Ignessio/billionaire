@@ -35,11 +35,9 @@ RSpec.describe GamesController, type: :controller do
       post :create
       game = assigns(:game) # вытаскиваем из контроллера поле @game
 
-      # проверяем состояние этой игры
-      expect(game.finished?).to be(false)
+      expect(game.finished?).to be(false) # проверяем состояние этой игры
       expect(game.user).to eq(user)
-      # и редирект на страницу этой игры
-      expect(response).to redirect_to(game_path(game))
+      expect(response).to redirect_to(game_path(game)) # и редирект на страницу этой игры
       expect(flash[:notice]).to be
     end
 
@@ -47,9 +45,9 @@ RSpec.describe GamesController, type: :controller do
     it '#show game' do
       get :show, id: game_w_questions.id
       game = assigns(:game) # вытаскиваем из контроллера поле @game
+
       expect(game.finished?).to be(false)
       expect(game.user).to eq(user)
-
       expect(response.status).to eq(200) # должен быть ответ HTTP 200
       expect(response).to render_template('show') # и отрендерить шаблон show
     end
@@ -79,6 +77,20 @@ RSpec.describe GamesController, type: :controller do
       expect(response.status).not_to eq(200) # статус не 200 ОК
       expect(response).to redirect_to(root_path)
       expect(flash[:alert]).to be # во flash должен быть прописана ошибка
+    end
+
+    it '#takes money' do
+      game_w_questions.update_attribute(:current_level, 2)
+      put :take_money, id: game_w_questions.id
+      game = assigns(:game)
+
+      expect(game.finished?).to be(true)
+      expect(game.prize).to eq(200)
+      expect(response).to redirect_to(user_path(user))
+      expect(flash[:warning]).to be
+
+      user.reload
+      expect(user.balance).to eq(200)
     end
   end
 end

@@ -13,10 +13,12 @@ RSpec.describe GamesController, type: :controller do
       it 'responses with not 200OK status' do
         expect(response.status).not_to eq(200)
       end
+
       it 'redirects to new session page' do
         expect(response).to redirect_to(new_user_session_path)
       end
-      it 'shows alert message' do
+
+      it 'sets a flash message' do
         expect(flash[:alert]).to be
       end
     end
@@ -33,13 +35,16 @@ RSpec.describe GamesController, type: :controller do
         expect(game.finished?).to be(false)
         expect(game.status).to eq(:in_progress)
       end
+
       it 'shows the user of the game' do
         expect(game.user).to eq(user)
       end
+
       it 'responses with 200OK status' do
         expect(response.status).to eq(200)
       end
-      it 'renders show game page' do
+
+      it 'sets rendering game page' do
         expect(response).to render_template('show')
       end
     end
@@ -54,10 +59,12 @@ RSpec.describe GamesController, type: :controller do
       it 'responses with not 200OK status' do
         expect(response.status).not_to eq(200)
       end
+
       it 'redirects to main page' do
         expect(response).to redirect_to(root_path)
       end
-      it 'shows alert message' do
+
+      it 'sets a flash message' do
         expect(flash[:alert]).to be
       end
     end
@@ -70,10 +77,12 @@ RSpec.describe GamesController, type: :controller do
       it 'responses with status not 200 OK' do
         expect(response.status).not_to eq(200)
       end
+
       it 'redirects to new session page' do
         expect(response).to redirect_to(new_user_session_path)
       end
-      it 'shows alert flash message' do
+
+      it 'sets a flash message' do
         expect(flash[:alert]).to be
       end
     end
@@ -93,13 +102,16 @@ RSpec.describe GamesController, type: :controller do
           expect(game.finished?).to be(false)
           expect(game.status).to eq(:in_progress)
         end
+
         it 'assignes the game to user' do
           expect(game.user).to eq(user)
         end
+
         it 'redirects to new game page' do
           expect(response).to redirect_to(game_path(game))
         end
-        it 'shows notification message' do
+
+        it 'sets a flash message' do
           expect(flash[:notice]).to be
         end
       end
@@ -110,8 +122,8 @@ RSpec.describe GamesController, type: :controller do
           expect { post :create }.to change(Game, :count).by(0)
 
           game = assigns(:game)
-          expect(game).to be_nil
 
+          expect(game).to be_nil
           expect(response).to redirect_to(game_path(game_w_questions))
           expect(flash[:alert]).to be
         end
@@ -129,10 +141,12 @@ RSpec.describe GamesController, type: :controller do
       it 'responses with status not 200 OK' do
         expect(response.status).not_to eq(200)
       end
+
       it 'redirects to new session page' do
         expect(response).to redirect_to(new_user_session_path)
       end
-      it 'shows alert flash message' do
+
+      it 'sets a flash message' do
         expect(flash[:alert]).to be
       end
     end
@@ -151,13 +165,16 @@ RSpec.describe GamesController, type: :controller do
         it 'continues' do
           expect(game.finished?).to be(false)
         end
+
         it 'increases game level' do
           expect(game.current_level).to be > 0
         end
+
         it 'redirects to game page' do
           expect(response).to redirect_to(game_path(game))
         end
-        it 'does not produce flash message' do
+
+        it 'does not set flash message' do
           expect(flash.empty?).to be(true)
         end
       end
@@ -172,10 +189,12 @@ RSpec.describe GamesController, type: :controller do
         it 'completes the game' do
         expect(game.finished?).to be(true)
         end
+
         it 'redirects to user page' do
         expect(response).to redirect_to(user_path(user))
         end
-        it 'shows alert flash message' do
+
+        it 'sets a flash message' do
         expect(flash[:alert]).to be
         end
       end
@@ -189,10 +208,12 @@ RSpec.describe GamesController, type: :controller do
       it 'responses with status not 200 OK' do
         expect(response.status).not_to eq(200)
       end
+
       it 'redirects to new session page' do
         expect(response).to redirect_to(new_user_session_path)
       end
-      it 'shows alert flash message' do
+
+      it 'sets a flash message' do
         expect(flash[:alert]).to be
       end
     end
@@ -209,15 +230,19 @@ RSpec.describe GamesController, type: :controller do
       it 'completes the game' do
         expect(game.finished?).to be(true)
       end
+
       it 'set the prize' do
         expect(game.prize).to eq(200)
       end
+
       it 'redirects to user page' do
         expect(response).to redirect_to(user_path(user))
       end
+
       it 'shows warning message' do
         expect(flash[:warning]).to be
       end
+
       it 'updates user balance' do
         user.reload
         expect(user.balance).to eq(200)
@@ -233,10 +258,12 @@ RSpec.describe GamesController, type: :controller do
       it 'responses with status not 200 OK' do
         expect(response.status).not_to eq(200)
       end
+
       it 'redirects to new session page' do
         expect(response).to redirect_to(new_user_session_path)
       end
-      it 'shows alert flash message' do
+
+      it 'sets a flash message' do
         expect(flash[:alert]).to be
       end
     end
@@ -264,18 +291,23 @@ RSpec.describe GamesController, type: :controller do
           expect(game.finished?).to be (false)
           expect(game.status).to eq(:in_progress)
         end
+
         it 'sets key used' do
           expect(game.fifty_fifty_used).to be true
         end
+
         it 'returns the key' do
           expect(game.current_game_question.help_hash[:fifty_fifty]).to be
         end
+
         it 'returns array including correct answer key' do
           expect(game.current_game_question.help_hash[:fifty_fifty]).to include(game.current_game_question.correct_answer_key)
         end
+
         it 'returns answers' do
           expect(game.current_game_question.help_hash[:fifty_fifty].size).to eq(2)
         end
+
         it 'redirects to game page' do
           expect(response).to redirect_to(game_path(game))
         end
@@ -291,15 +323,19 @@ RSpec.describe GamesController, type: :controller do
           expect(game.finished?).to be (false)
           expect(game.status).to eq(:in_progress)
         end
+
         it 'sets key used' do
           expect(game.audience_help_used).to be true
         end
+
         it 'returns the key' do
           expect(game.current_game_question.help_hash[:audience_help]).to be
         end
+
         it 'returns array including correct answer key' do
           expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
         end
+
         it 'redirects to game page' do
           expect(response).to redirect_to(game_path(game))
         end
@@ -315,12 +351,19 @@ RSpec.describe GamesController, type: :controller do
           expect(game.finished?).to be (false)
           expect(game.status).to eq(:in_progress)
         end
+
         it 'sets key used' do
           expect(game.friend_call_used).to be true
         end
-        it 'returns the key' do
+
+        it 'confirmes existance of instance' do
           expect(game.current_game_question.help_hash[:friend_call]).to be
         end
+
+        it 'returns the string' do
+          expect(game.current_game_question.help_hash[:friend_call]).instance_of?(String)
+        end
+        
         it 'redirects to game page' do
           expect(response).to redirect_to(game_path(game))
         end

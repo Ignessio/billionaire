@@ -112,6 +112,10 @@ RSpec.describe GameQuestion, type: :model do
       it 'returns a string' do
         expect(game_question.help_hash[:friend_call]).instance_of?(String)
       end
+
+      it 'correct answer key is in the string' do
+        expect(game_question.help_hash[:friend_call]).to match /.*B/
+      end
     end
   end
 end

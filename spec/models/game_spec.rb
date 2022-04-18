@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/my_spec_helper'
 
 RSpec.describe Game, type: :model do
   # пользователь для создания игр

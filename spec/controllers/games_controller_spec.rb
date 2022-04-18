@@ -2,9 +2,9 @@ require 'rails_helper'
 require 'support/my_spec_helper'
 
 RSpec.describe GamesController, type: :controller do
-  let(:user) { FactoryBot.create(:user) }
-  let(:admin) { FactoryBot.create(:user, is_admin: true) }
-  let(:game_w_questions) { FactoryBot.create(:game_with_questions, user: user) }
+  let(:user) { create(:user) }
+  let(:admin) { create(:user, is_admin: true) }
+  let(:game_w_questions) { create(:game_with_questions, user: user) }
 
   describe '#show' do
     context 'when anonymous user' do
@@ -52,7 +52,7 @@ RSpec.describe GamesController, type: :controller do
     context 'when signed in user tries not own game' do
       before do
         sign_in user
-        alien_game = FactoryBot.create(:game_with_questions)
+        alien_game = create(:game_with_questions)
         get :show, id: alien_game.id
       end
 
@@ -363,7 +363,7 @@ RSpec.describe GamesController, type: :controller do
         it 'returns the string' do
           expect(game.current_game_question.help_hash[:friend_call]).instance_of?(String)
         end
-        
+
         it 'redirects to game page' do
           expect(response).to redirect_to(game_path(game))
         end

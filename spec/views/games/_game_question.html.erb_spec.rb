@@ -1,11 +1,12 @@
 require 'rails_helper'
+require 'support/my_spec_helper'
 
 # Тест на шаблон games/_game_question.html.erb
 
 RSpec.describe 'games/game_question', type: :view do
   # Создадим тестовый объект game_question, который будет доступен в каждом it,
   # где он понадобится
-  let(:game_question) { FactoryBot.build_stubbed :game_question }
+  let(:game_question) { build_stubbed :game_question }
 
   before(:each) do
     # Перед каждым тестом мы "сымитируем" у объекта game_question пару методов

@@ -19,3 +19,7 @@
 .idea
 
 .DS_Store
+
+# Ignore all test files
+Makefile
+/test/*

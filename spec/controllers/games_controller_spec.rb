@@ -19,7 +19,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq('Это не ваша игра!')
       end
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
       end
     end
 
@@ -125,7 +125,7 @@ RSpec.describe GamesController, type: :controller do
 
           expect(game).to be_nil
           expect(response).to redirect_to(game_path(game_w_questions))
-          expect(flash[:alert]).to be
+          expect(flash[:alert]).to eq('Вы еще не завершили игру')
         end
       end
     end
@@ -147,7 +147,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
       end
     end
 
@@ -214,7 +214,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
       end
     end
 
@@ -251,7 +251,6 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#help' do
-
     context 'when anonymous user' do
       before { put :help, id: game_w_questions.id }
 
@@ -264,25 +263,25 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
       end
     end
 
     context 'when signed in user' do
       before { sign_in user }
-        it 'returns key empty' do
-          expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
-          expect(game_w_questions.current_game_question.help_hash[:audience_help]).not_to be
-          expect(game_w_questions.current_game_question.help_hash[:friend_call]).not_to be
-        end
-        it 'returns not used help type' do
-          expect(game_w_questions.fifty_fifty_used).to be false
-          expect(game_w_questions.audience_help_used).to be false
-          expect(game_w_questions.friend_call_used).to be false
-        end
+
+      it 'returns key empty' do
+        expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
+        expect(game_w_questions.current_game_question.help_hash[:audience_help]).not_to be
+        expect(game_w_questions.current_game_question.help_hash[:friend_call]).not_to be
+      end
+      it 'returns not used help type' do
+        expect(game_w_questions.fifty_fifty_used).to be false
+        expect(game_w_questions.audience_help_used).to be false
+        expect(game_w_questions.friend_call_used).to be false
+      end
 
       context 'and uses fifty-fifty help' do
-
         before { put :help, id: game_w_questions.id, help_type: :fifty_fifty }
 
         let(:game) { assigns(:game) }
@@ -314,7 +313,6 @@ RSpec.describe GamesController, type: :controller do
       end
 
       context 'and uses audience-help help' do
-
         before { put :help, id: game_w_questions.id, help_type: :audience_help }
 
         let(:game) { assigns(:game) }
@@ -342,7 +340,6 @@ RSpec.describe GamesController, type: :controller do
       end
 
       context 'and uses friend-call help' do
-
         before { put :help, id: game_w_questions.id, help_type: :friend_call }
 
         let(:game) { assigns(:game) }
@@ -362,6 +359,10 @@ RSpec.describe GamesController, type: :controller do
 
         it 'returns the string' do
           expect(game.current_game_question.help_hash[:friend_call]).instance_of?(String)
+        end
+
+        it 'returns correct answer key letter' do
+          expect(game.current_game_question.help_hash[:friend_call]).to match /.*D/
         end
 
         it 'redirects to game page' do

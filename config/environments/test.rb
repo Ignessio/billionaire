@@ -45,7 +45,7 @@ Rails.application.configure do
   # Внимание! Нужно поднять сервер на 3000-м порте.
   config.serve_static_files = true
   config.assets.debug = true
-  config.asset_host   = 'http://localhost:3000'
+  config.asset_host = 'http://localhost:3000'
   config.static_cache_control = 'public, max-age=3600'
 
 end

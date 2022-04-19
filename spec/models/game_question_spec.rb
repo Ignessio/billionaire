@@ -7,11 +7,8 @@ RSpec.describe GameQuestion, type: :model do
   # Распределяем варианты ответов по-своему
   let(:game_question) { create(:game_question, a: 2, b: 1, c: 4, d: 3) }
 
-  context 'game status' do
-    # Тест на правильную генерацию хеша с вариантами
-    it 'correct .variants' do
-      # Ожидаем, что варианты ответов будут соответствовать тем,
-      # которые мы написали выше
+  describe '#variants' do
+    it 'returns answer variants' do
       expect(game_question.variants).to eq(
         'a' => game_question.question.answer2,
         'b' => game_question.question.answer1, # правильный ответ
@@ -19,25 +16,29 @@ RSpec.describe GameQuestion, type: :model do
         'd' => game_question.question.answer3
       )
     end
+  end
 
-    # Проверяем метод answer_correct?
-    describe '#correct_answer?' do
-      it 'check answer_correct?' do
-        expect(game_question.answer_correct?('b')).to be(true)
-      end
+  describe '#correct_answer?' do
+    it 'returns true for correct answer' do
+      expect(game_question.answer_correct?('b')).to be(true)
     end
+  end
 
-    # Проверяем метод correct_answer_key
-    describe '#correct_answer_key' do
-      it 'returns the key of the correct answer' do
-        expect(game_question.correct_answer_key).to eq('b')
-      end
+  describe '#correct_answer_key' do
+    it 'returns correct answer key' do
+      expect(game_question.correct_answer_key).to eq('b')
     end
+  end
 
-    # Проверяем метод делегирования текста и уровня вопросу
-    it 'correct .level & .text delegates' do
-      expect(game_question.text).to eq(game_question.question.text)
+  describe '#level' do
+    it 'delegates to queston' do
       expect(game_question.level).to eq(game_question.question.level)
+    end
+  end
+
+  describe '#text' do
+    it 'delegates to queston' do
+      expect(game_question.text).to eq(game_question.question.text)
     end
   end
 
@@ -113,7 +114,7 @@ RSpec.describe GameQuestion, type: :model do
         expect(game_question.help_hash[:friend_call]).instance_of?(String)
       end
 
-      it 'correct answer key is in the string' do
+      it 'returns correct answer key letter' do
         expect(game_question.help_hash[:friend_call]).to match /.*B/
       end
     end

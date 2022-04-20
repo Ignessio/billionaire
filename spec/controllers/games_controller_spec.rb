@@ -19,7 +19,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to eq('Это не ваша игра!')
+        expect(flash[:alert]).to eq(I18n.t('controllers.games.not_your_game'))
       end
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
 
@@ -112,7 +112,7 @@ RSpec.describe GamesController, type: :controller do
         end
 
         it 'sets a flash message' do
-          expect(flash[:notice]).to be
+          expect(flash[:notice]).to eq(I18n.t('controllers.games.game_created', created_at: game_w_questions.created_at))
         end
       end
 
@@ -125,7 +125,7 @@ RSpec.describe GamesController, type: :controller do
 
           expect(game).to be_nil
           expect(response).to redirect_to(game_path(game_w_questions))
-          expect(flash[:alert]).to eq('Вы еще не завершили игру')
+          expect(flash[:alert]).to eq(I18n.t('controllers.games.game_not_finished'))
         end
       end
     end
@@ -147,7 +147,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
 
@@ -214,7 +214,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
 
@@ -263,7 +263,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'sets a flash message' do
-        expect(flash[:alert]).to eq('Вам необходимо войти в систему или зарегистрироваться.')
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
 
@@ -362,7 +362,7 @@ RSpec.describe GamesController, type: :controller do
         end
 
         it 'returns correct answer key letter' do
-          expect(game.current_game_question.help_hash[:friend_call]).to match /.*D/
+          expect(game.current_game_question.help_hash[:friend_call]).to match /[A-D]/
         end
 
         it 'redirects to game page' do

@@ -115,7 +115,7 @@ RSpec.describe GameQuestion, type: :model do
       end
 
       it 'returns correct answer key letter' do
-        expect(game_question.help_hash[:friend_call]).to match /.*B/
+        expect(game_question.help_hash[:friend_call]).to match /[A-D]/
       end
     end
   end
